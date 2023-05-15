@@ -22,6 +22,8 @@ namespace ariel {
 
         std::string print() const;
 
+        static Point moveTowards(Point &src,Point &dest, double distance);
+
     };
 }
 

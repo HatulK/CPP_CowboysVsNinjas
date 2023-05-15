@@ -27,6 +27,6 @@ std::string ariel::Point::print() const {
     return "(" + std::to_string(this->xpoint) + "," + std::to_string(this->ypoint) + ")";
 }
 
-Point ariel::moveTowards(Point &src, Point &dest, double distance) {
+Point ariel::moveTowards(Point &source, Point &dest, double distance) {
     return {0, 0};
 }

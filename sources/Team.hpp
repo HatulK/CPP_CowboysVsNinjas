@@ -28,7 +28,7 @@ namespace ariel {
 
         void add(Character *character);
 
-        void attack(Team *enemyTeam);
+        virtual void attack(Team *enemyTeam);
 
         int stillAlive();
 

@@ -113,7 +113,7 @@
 // =================================================================================================
 
 #if DOCTEST_CLANG && !DOCTEST_ICC
-#define DOCTEST_PRAGMA_TO_STR(xpoint) _Pragma(#xpoint)
+#define DOCTEST_PRAGMA_TO_STR(x) _Pragma(#x)
 #define DOCTEST_CLANG_SUPPRESS_WARNING_PUSH _Pragma("clang diagnostic push")
 #define DOCTEST_CLANG_SUPPRESS_WARNING(w) DOCTEST_PRAGMA_TO_STR(clang diagnostic ignored w)
 #define DOCTEST_CLANG_SUPPRESS_WARNING_POP _Pragma("clang diagnostic pop")
@@ -349,11 +349,11 @@ DOCTEST_MSVC_SUPPRESS_WARNING(4623) // default constructor was implicitly define
 #if DOCTEST_MSVC
 #define DOCTEST_NOINLINE __declspec(noinline)
 #define DOCTEST_UNUSED
-#define DOCTEST_ALIGNMENT(xpoint)
+#define DOCTEST_ALIGNMENT(x)
 #elif DOCTEST_CLANG && DOCTEST_CLANG < DOCTEST_COMPILER(3, 5, 0)
 #define DOCTEST_NOINLINE
 #define DOCTEST_UNUSED
-#define DOCTEST_ALIGNMENT(xpoint)
+#define DOCTEST_ALIGNMENT(x)
 #else
 #define DOCTEST_NOINLINE __attribute__((noinline))
 #define DOCTEST_UNUSED __attribute__((unused))
@@ -421,13 +421,13 @@ DOCTEST_MSVC_SUPPRESS_WARNING(4623) // default constructor was implicitly define
 #ifdef __COUNTER__ // not standard and may be missing for some compilers
 #define DOCTEST_ANONYMOUS(x) DOCTEST_CAT(x, __COUNTER__)
 #else // __COUNTER__
-#define DOCTEST_ANONYMOUS(xpoint) DOCTEST_CAT(xpoint, __LINE__)
+#define DOCTEST_ANONYMOUS(x) DOCTEST_CAT(x, __LINE__)
 #endif // __COUNTER__
 
 #ifndef DOCTEST_CONFIG_ASSERTION_PARAMETERS_BY_VALUE
 #define DOCTEST_REF_WRAP(x) x&
 #else // DOCTEST_CONFIG_ASSERTION_PARAMETERS_BY_VALUE
-#define DOCTEST_REF_WRAP(xpoint) xpoint
+#define DOCTEST_REF_WRAP(x) x
 #endif // DOCTEST_CONFIG_ASSERTION_PARAMETERS_BY_VALUE
 
 // not using __APPLE__ because... this is how Catch does it
@@ -923,7 +923,7 @@ struct ContextOptions //!OCLINT too many fields
     bool force_colors;         // forces the use of colors even when a tty cannot be detected
     bool no_breaks;            // to not break into the debugger
     bool no_skip;              // don't skip test cases which are marked to be skipped
-    bool gnu_file_line;        // if line numbers should be surrounded with :xpoint: and not (xpoint):
+    bool gnu_file_line;        // if line numbers should be surrounded with :x: and not (x):
     bool no_path_in_filenames; // if the path to files should be removed from the output
     bool no_line_numbers;      // if source code line numbers should be omitted from the output
     bool no_debug_output;      // no output in the debug console when a debugger is attached
@@ -2139,7 +2139,7 @@ int registerReporter(const char* name, int priority, bool isReporter) {
     DOCTEST_FUNC_SCOPE_RET(!b.m_failed)
 
 #ifdef DOCTEST_CONFIG_NO_TRY_CATCH_IN_ASSERTS
-#define DOCTEST_WRAP_IN_TRY(xpoint) xpoint;
+#define DOCTEST_WRAP_IN_TRY(x) x;
 #else // DOCTEST_CONFIG_NO_TRY_CATCH_IN_ASSERTS
 #define DOCTEST_WRAP_IN_TRY(x)                                                                     \
     try {                                                                                          \
@@ -2590,8 +2590,8 @@ int registerReporter(const char* name, int priority, bool isReporter) {
     DOCTEST_CREATE_AND_REGISTER_FUNCTION(DOCTEST_ANONYMOUS(DOCTEST_ANON_FUNC_), name)
 
 // for registering tests with a fixture
-#define DOCTEST_TEST_CASE_FIXTURE(xpoint, name)                                                         \
-    DOCTEST_IMPLEMENT_FIXTURE(DOCTEST_ANONYMOUS(DOCTEST_ANON_CLASS_), xpoint,                           \
+#define DOCTEST_TEST_CASE_FIXTURE(x, name)                                                         \
+    DOCTEST_IMPLEMENT_FIXTURE(DOCTEST_ANONYMOUS(DOCTEST_ANON_CLASS_), x,                           \
                               DOCTEST_ANONYMOUS(DOCTEST_ANON_FUNC_), name)
 
 // for converting types to strings without the <typeinfo> header and demangling
@@ -2630,7 +2630,7 @@ int registerReporter(const char* name, int priority, bool isReporter) {
 #define DOCTEST_REGISTER_LISTENER(name, priority, reporter)
 
 #define DOCTEST_INFO(...) (static_cast<void>(0))
-#define DOCTEST_CAPTURE(xpoint) (static_cast<void>(0))
+#define DOCTEST_CAPTURE(x) (static_cast<void>(0))
 #define DOCTEST_ADD_MESSAGE_AT(file, line, ...) (static_cast<void>(0))
 #define DOCTEST_ADD_FAIL_CHECK_AT(file, line, ...) (static_cast<void>(0))
 #define DOCTEST_ADD_FAIL_AT(file, line, ...) (static_cast<void>(0))
@@ -3134,7 +3134,7 @@ DOCTEST_GCC_SUPPRESS_WARNING("-Wmultiple-inheritance")
 DOCTEST_GCC_SUPPRESS_WARNING("-Wsuggest-attribute")
 
 DOCTEST_MSVC_SUPPRESS_WARNING_PUSH
-DOCTEST_MSVC_SUPPRESS_WARNING(4267) // 'var' : conversion from 'xpoint' to 'ypoint', possible loss of data
+DOCTEST_MSVC_SUPPRESS_WARNING(4267) // 'var' : conversion from 'x' to 'y', possible loss of data
 DOCTEST_MSVC_SUPPRESS_WARNING(4530) // C++ exception handler used, but unwind semantics not enabled
 DOCTEST_MSVC_SUPPRESS_WARNING(4577) // 'noexcept' used with no exception handling mode specified
 DOCTEST_MSVC_SUPPRESS_WARNING(4774) // format string expected in argument is not a string literal
@@ -3231,7 +3231,7 @@ DOCTEST_MAKE_STD_HEADERS_CLEAN_FROM_WARNINGS_ON_WALL_BEGIN
 DOCTEST_MAKE_STD_HEADERS_CLEAN_FROM_WARNINGS_ON_WALL_END
 
 // counts the number of elements in a C array
-#define DOCTEST_COUNTOF(xpoint) (sizeof(xpoint) / sizeof(xpoint[0]))
+#define DOCTEST_COUNTOF(x) (sizeof(x) / sizeof(x[0]))
 
 #ifdef DOCTEST_CONFIG_DISABLE
 #define DOCTEST_BRANCH_ON_DISABLED(if_disabled, if_not_disabled) if_disabled
@@ -3321,9 +3321,9 @@ namespace {
         };
 
         static Arch which() {
-            int xpoint = 1;
+            int x = 1;
             // casting any data pointer to char* is allowed
-            auto ptr = reinterpret_cast<char*>(&xpoint);
+            auto ptr = reinterpret_cast<char*>(&x);
             if(*ptr)
                 return Little;
             return Big;
@@ -3829,7 +3829,7 @@ namespace Color {
 
 // clang-format off
 const char* assertString(assertType::Enum at) {
-    DOCTEST_MSVC_SUPPRESS_WARNING_WITH_PUSH(4061) // enum 'xpoint' in switch of enum 'ypoint' is not explicitly handled
+    DOCTEST_MSVC_SUPPRESS_WARNING_WITH_PUSH(4061) // enum 'x' in switch of enum 'y' is not explicitly handled
     #define DOCTEST_GENERATE_ASSERT_TYPE_CASE(assert_type) case assertType::DT_ ## assert_type: return #assert_type
     #define DOCTEST_GENERATE_ASSERT_TYPE_CASES(assert_type) \
         DOCTEST_GENERATE_ASSERT_TYPE_CASE(WARN_ ## assert_type); \
@@ -4441,7 +4441,7 @@ namespace {
             }
         } ch;
 
-#define DOCTEST_SET_ATTR(xpoint) SetConsoleTextAttribute(ch.stdoutHandle, xpoint | ch.origBgAttrs)
+#define DOCTEST_SET_ATTR(x) SetConsoleTextAttribute(ch.stdoutHandle, x | ch.origBgAttrs)
 
         // clang-format off
         switch (code) {
@@ -5161,7 +5161,7 @@ namespace {
 
     void hexEscapeChar(std::ostream& os, unsigned char c) {
         std::ios_base::fmtflags f(os.flags());
-        os << "\\xpoint"
+        os << "\\x"
             << std::uppercase << std::hex << std::setfill('0') << std::setw(2)
             << static_cast<int>(c);
         os.flags(f);
