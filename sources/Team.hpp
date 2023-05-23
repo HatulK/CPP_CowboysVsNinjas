@@ -9,16 +9,22 @@
 #include "array"
 
 namespace ariel {
-    const int maxCharacters = 10;
+    
 
     class Team {
     private:
-        std::array<Character, maxCharacters> characters;
+        std::array<Character, 10> characters;
         Character *leader;
+        int teamsize;
+    public:
+        int getTeamsize() const;
+
     public:
         explicit Team(Character *leader);
 
         Team(const Team& other);
+
+        void setLeader(Character *newLeader);
 
         Team(Team&& other) noexcept;
 
@@ -36,9 +42,13 @@ namespace ariel {
 
         virtual ~Team();
 
-        const std::array<Character, maxCharacters> &getCharacters() const;
+        std::array<Character, 10> getCharacters() const;
 
         Character *getLeader() const;
+
+        void swapLeader();
+
+        Character *findNearestEnemy(Team *team);
     };
 }
 

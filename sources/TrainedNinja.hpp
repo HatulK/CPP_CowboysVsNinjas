@@ -8,7 +8,7 @@ namespace ariel {
 
 
     public:
-        TrainedNinja(std::string name,Point location);
+        TrainedNinja(const std::string &name1, const Point &location1);
     };
 }
 #endif //SYSTEMSEX4A_TRAINEDNINJA_H

@@ -5,12 +5,21 @@
 using namespace ariel;
 
 
-Cowboy::Cowboy(std::string name,Point location) :
-        Character(std::move(name), location, maxCowboyHP, typeCowboy),
-        bullets(maxBullets) {}
+Cowboy::Cowboy(std::string name, Point location) :
+        Character(std::move(name), std::move(location),110, typeCowboy),
+        bullets(6) {}
 
-bool Cowboy::shoot(Character *enemy) {
-    return false;
+void Cowboy::shoot(Character *enemy) {
+    if(enemy== this)throw std::runtime_error("A character can't attack himself\n");
+    if (!enemy->isAlive()) throw std::runtime_error("Its not smart to attack dead characters.\n");
+    if (!this->isAlive()) throw std::runtime_error("Dead cowboys cannot shoot.\n");
+if(!this->hasboolets()){
+    printf("Cannot shoot this turn, instead im reloading.\n");
+    this->reload();
+}
+//Cowboy damage is 10.
+enemy->hit(10);
+    printf("Shoot successfully, %s has taken 10 damage\n",enemy->getName().c_str());
 }
 
 bool Cowboy::hasboolets() const {
@@ -18,7 +27,7 @@ bool Cowboy::hasboolets() const {
 }
 
 void Cowboy::reload() {
-    if (bullets == 6) throw std::logic_error("Magazine is at full capacity.\n");
+    if(!this->isAlive()) throw std::runtime_error("A dead cowboy can't reload.\n");
     bullets = 6;
 }
 

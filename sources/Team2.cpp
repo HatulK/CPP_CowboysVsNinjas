@@ -1,10 +1,11 @@
-
 #include "Team2.hpp"
 
-ariel::Team2::Team2(Character *leader) : Team(leader) {
+using namespace ariel;
 
-}
+Team2::Team2(Character *leader) : Team(leader) {}
 
-void ariel::Team2::attack(ariel::Team *enemyTeam) {
-    Team::attack(enemyTeam);
-}
+void Team2::attack(ariel::Team *enemyTeam) {}
+
+void Team2::print() {}
+
+

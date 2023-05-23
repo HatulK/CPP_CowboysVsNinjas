@@ -6,33 +6,38 @@
 
 namespace ariel {
     enum characterType {
-        noType = 0, typeNinja = 1, typeYoungNinja = 2, typeTrainedNinja = 3, typeOldNinja = 4, typeCowboy = 5
+        noType = 0, typeYoungNinja = 1, typeTrainedNinja = 2, typeOldNinja = 3, typeCowboy = 4
     };
 
     class Character {
     private:
         Point location;
         int healthpoints;
+        bool inteam;
         std::string name;
 
         enum characterType type;
 
     public:
-        Character(std::string name,Point location, int healthpoints, enum characterType type);
+        Character(std::string name,Point location, int healthpoints,enum characterType type);
 
         virtual ~Character();
 
+        bool isInTeam() const;
+
+        void setTeam();
+
         Character();
 
-        static bool isAlive();
+        bool isAlive() const;
 
-        static double distance(Character *otherChar);
+        double distance(Character *otherChar);
 
         void hit(int damage);
 
-        virtual std::string print() const;
+        Point getLocation();
 
-        const Point &getLocation() const;
+        virtual std::string print() const;
 
         int gethealthpoints() const;
 
@@ -44,12 +49,13 @@ namespace ariel {
 
          Character(const Character& other);
 
-        Character& operator=(const Character& other);
+        Character &operator=(const Character &other);
 
         Character(Character &&other) noexcept;
 
+        void setLocation(const Point &newLocation);
     };
 }
 
 
-#endif //SYSTEMSEX4A_CHARACTER_healthpointsP
+#endif

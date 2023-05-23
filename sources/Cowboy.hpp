@@ -4,8 +4,6 @@
 #include "Character.hpp"
 
 namespace ariel {
-    const int maxCowboyHP = 110;
-    const int maxBullets = 6;
 
     class Cowboy : public Character {
     private:
@@ -13,7 +11,7 @@ namespace ariel {
     public:
         Cowboy(std::string name,Point location);
 
-        static bool shoot(Character *enemy);
+        void shoot(Character *enemy);
 
         bool hasboolets() const;
 

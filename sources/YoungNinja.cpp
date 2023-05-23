@@ -1,7 +1,9 @@
 #include "YoungNinja.hpp"
 
+#include <utility>
+
 using namespace ariel;
 
-YoungNinja::YoungNinja(std::string name,Point location): Ninja(name,location,trainedNinjaHP,trainedNinjaSpeed,typeTrainedNinja) {
+YoungNinja::YoungNinja(const std::string &name,const Point &location): Ninja(name,location,100,14,typeYoungNinja) {
 
 }

@@ -2,6 +2,7 @@
 #define EX4_POINT_HPP
 
 #include "string"
+
 namespace ariel {
     class Point {
     private:
@@ -10,11 +11,20 @@ namespace ariel {
 
     public:
         Point(double xpoint, double ypoint);
+
         Point();
 
-        double distance(const Point &point) const;
+        Point &operator=(const Point &other);
 
-        friend Point moveTowards(Point &source, Point &dest, double distance);
+        Point(const Point &other);
+
+        Point(Point &&other) noexcept;
+
+        Point &operator=(Point &&other) noexcept;
+
+        ~Point();
+
+        double distance(const Point &point) const;
 
         double getX() const;
 
@@ -22,7 +32,7 @@ namespace ariel {
 
         std::string print() const;
 
-        static Point moveTowards(Point &src,Point &dest, double distance);
+        static Point moveTowards(const Point &src, const Point &dest, double distance);
 
     };
 }
