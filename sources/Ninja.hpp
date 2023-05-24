@@ -7,7 +7,7 @@ namespace ariel {
 
     class Ninja : public Character {
     private:
-        int speed{};
+        const int speed{};
     protected:
         Ninja(std::string name,Point location, int healthpoints,
               int speed, enum characterType type);

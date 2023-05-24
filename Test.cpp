@@ -82,7 +82,7 @@ TEST_CASE("team") {
     auto ninja8 = new YoungNinja(("Ninja8"), {0, 0});
     auto ninja9 = new YoungNinja(("Ninja9"), {0, 0});
     auto ninja10 = new YoungNinja(("Ninja10"), {0, 0});
-    Team team1 = *new Team(LeaderNinja); //1
+    auto team1 = new Team(LeaderNinja); //1
     team1.add(ninja1); //2
     CHECK_THROWS(team1.add(ninja1)); // Cannot add the same character twice.
     team1.add(ninja2); //3

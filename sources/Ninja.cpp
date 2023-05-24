@@ -4,8 +4,8 @@
 
 using namespace ariel;
 
-Ninja::Ninja(std::string name, Point location, int hp, int speed, enum characterType type) :
-        Character(std::move(name),location, hp,type),speed(speed) {}
+Ninja::Ninja(std::string name, Point location, int healthpoint, int speed, enum characterType type) :
+        Character(std::move(name),std::move(location), healthpoint,type),speed(speed) {}
 
 
 void Ninja::move(Character *enemy) {

@@ -2,14 +2,15 @@
 
 using namespace ariel;
 
-Team::Team(Character *leader) : leader(leader) {
+Team::Team(Character *leader){
     std::fill(characters.begin(), characters.end(), nullptr);
+    if(leader== nullptr) throw std::runtime_error("The leader is null pointer.\n");
     if (leader->isInTeam()) throw std::runtime_error("The leader is already associated with a different team.\n");
     if (!leader->isAlive()) throw std::runtime_error("Cannot place a dead character as a team leader\n");
     this->leader = leader;
     this->leader->setTeam();
-    characters.at(0) = this->leader;
-    teamsize = 1;
+    this->characters.at(0) = this->leader;
+    this->teamsize = 1;
 }
 
 // Copy constructor
@@ -52,7 +53,6 @@ Team::~Team() {
     }
 }
 
-
 void Team::add(Character *character) {
     if (character == nullptr) throw std::invalid_argument("Null pointer\n");
     if (character->isInTeam()) throw std::runtime_error("This member already in a team.\n");
@@ -73,9 +73,10 @@ int Team::stillAlive() {
     return num;
 }
 
-std::array<Character *, 10> Team::getCharacters() const {
+const std::array<Character*, 10>& Team::getCharacters() const {
     return characters;
 }
+
 
 Character *Team::getLeader() const {
     return leader;
@@ -86,7 +87,7 @@ int Team::getTeamsize() const {
 }
 
 void Team::setLeader(Character *newLeader) {
-    Team::leader = newLeader;
+    this->leader = newLeader;
 }
 
 void Team::swapLeader() {

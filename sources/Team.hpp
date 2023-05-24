@@ -17,16 +17,12 @@ namespace ariel {
         Character *leader;
         int teamsize;
     public:
-        int getTeamsize() const;
 
-    public:
         explicit Team(Character *leader);
 
-        Team(const Team& other);
+        Team(const Team &other);
 
-        void setLeader(Character *newLeader);
-
-        Team(Team&& other) noexcept;
+        Team(Team &&other) noexcept;
 
         Team &operator=(Team &&other) noexcept;
 
@@ -38,13 +34,17 @@ namespace ariel {
 
         int stillAlive();
 
-        void print();
+        virtual void print();
 
         virtual ~Team();
 
-        std::array<Character*, 10> getCharacters() const;
+        const std::array<Character*, 10>& getCharacters() const;
+
+        int getTeamsize() const;
 
         Character *getLeader() const;
+
+        void setLeader(Character *newLeader);
 
         void swapLeader();
     };

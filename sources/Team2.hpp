@@ -11,7 +11,7 @@ namespace ariel {
         void attack(Team *enemyTeam) override;
 
 
-        void print();
+        void print() override;
     };
 }
 #endif //SYSTEMSEX4A_TEAM2_H
