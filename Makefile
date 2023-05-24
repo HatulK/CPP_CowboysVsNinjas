@@ -18,9 +18,14 @@ run: test
 demo: Demo.o $(OBJECTS) 
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
+demo2: MyDemo.o $(OBJECTS)
+	$(CXX) $(CXXFLAGS) $^ -o $@
+
 test: TestRunner.o StudentTest1.o  $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
+test2: TestRunner.o Test.o  $(OBJECTS)
+	$(CXX) $(CXXFLAGS) $^ -o $@
 
 tidy:
 	$(TIDY) $(HEADERS) $(TIDY_FLAGS) --
