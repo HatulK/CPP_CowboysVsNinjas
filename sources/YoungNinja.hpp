@@ -12,4 +12,4 @@ namespace ariel {
     };
 }
 
-#endif //SYSTEMSEX4A_YOUNGNINJA_H
+#endif

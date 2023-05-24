@@ -1,13 +1,15 @@
 #include "Character.hpp"
+#include "Team.hpp"
 
 #include <utility>
 #include <valarray>
+#include <limits>
 
 using namespace ariel;
 
 // Constructor
 Character::Character(std::string name, Point location, int hp,
-                     enum characterType type) : location(location),
+                     enum characterType type) : location(std::move(location)),
                                                 healthpoints(hp), inteam(false),
                                                 name(std::move(name)),
                                                 type(type) {}
@@ -22,8 +24,8 @@ bool Character::isAlive() const {
 
 //Returns the distance from this to other
 double Character::distance(Character *other) {
-    return sqrt(pow(other->location.getX() - getLocation().getX(), 2) +
-                pow(other->location.getY() - getLocation().getY(), 2) * 1.0);
+    double ans = this->location.distance(other->getLocation());
+    return ans;
 }
 
 //Set the player HP after being attacked
@@ -111,6 +113,20 @@ void Character::setTeam() {
     inteam = true;
 }
 
-
+Character *Character::findNearestCharacter(Team *team) {
+    Character *answer = nullptr;
+    double temp;
+    double minDistance = std::numeric_limits<double>::max();
+    for (int i = 0; i < team->getTeamsize(); ++i) {
+        if (team->getCharacters().at(i) != nullptr && team->getCharacters().at(i)->isAlive()&&this!=team->getCharacters().at(i)) {
+            temp = this->distance(team->getCharacters().at(i));
+            if (temp < minDistance) {
+                minDistance = temp;
+                answer = team->getCharacters().at(i);
+            }
+        }
+    }
+    return answer;
+}
 //Destructor
 Character::~Character() = default;

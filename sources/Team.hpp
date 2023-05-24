@@ -13,7 +13,7 @@ namespace ariel {
 
     class Team {
     private:
-        std::array<Character, 10> characters;
+        std::array<Character*, 10> characters{};
         Character *leader;
         int teamsize;
     public:
@@ -42,14 +42,12 @@ namespace ariel {
 
         virtual ~Team();
 
-        std::array<Character, 10> getCharacters() const;
+        std::array<Character*, 10> getCharacters() const;
 
         Character *getLeader() const;
 
         void swapLeader();
-
-        Character *findNearestEnemy(Team *team);
     };
 }
 
-#endif //SYSTEMSEX4A_TEAM_H
+#endif

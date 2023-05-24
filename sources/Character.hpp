@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "Point.hpp"
+#include "Team.hpp"
 
 namespace ariel {
     enum characterType {
@@ -31,7 +32,7 @@ namespace ariel {
 
         bool isAlive() const;
 
-        double distance(Character *otherChar);
+        double distance(Character *other);
 
         void hit(int damage);
 
@@ -54,6 +55,9 @@ namespace ariel {
         Character(Character &&other) noexcept;
 
         void setLocation(const Point &newLocation);
+
+
+        Character *findNearestCharacter(ariel::Team *team);
     };
 }
 

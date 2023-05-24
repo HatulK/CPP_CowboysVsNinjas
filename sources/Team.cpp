@@ -3,10 +3,12 @@
 using namespace ariel;
 
 Team::Team(Character *leader) : leader(leader) {
+    std::fill(characters.begin(), characters.end(), nullptr);
     if (leader->isInTeam()) throw std::runtime_error("The leader is already associated with a different team.\n");
     if (!leader->isAlive()) throw std::runtime_error("Cannot place a dead character as a team leader\n");
     this->leader = leader;
-    characters.at(0) = *this->leader;
+    this->leader->setTeam();
+    characters.at(0) = this->leader;
     teamsize = 1;
 }
 
@@ -25,6 +27,7 @@ Team::Team(Team &&other) noexcept
 // Copy assignment operator
 Team &Team::operator=(const Team &other) {
     if (this != &other) {
+        teamsize = other.teamsize;
         characters = other.characters;
         delete leader;
         leader = new Character(*(other.leader));
@@ -35,15 +38,19 @@ Team &Team::operator=(const Team &other) {
 // Move assignment operator
 Team &Team::operator=(Team &&other) noexcept {
     if (this != &other) {
-        characters = std::move(other.characters);
-        delete leader;
+        characters = other.characters;
+        teamsize = other.teamsize;
         leader = other.leader;
         other.leader = nullptr;
     }
     return *this;
 }
 
-Team::~Team() = default; ////TBD
+Team::~Team() {
+    for (auto &character: characters) {
+        delete character;
+    }
+}
 
 
 void Team::add(Character *character) {
@@ -52,21 +59,21 @@ void Team::add(Character *character) {
     if (!character->isAlive()) throw std::runtime_error("Cannot add a dead character to a team.\n");
     if (characters.size() == 10) throw std::runtime_error("Max character capacity reached.\n");
     character->setTeam();
-    characters.at(teamsize) = *character;
+    characters.at(teamsize) = character;
     teamsize++;
 }
 
 int Team::stillAlive() {
     int num = 0;
     for (int i = 0; i < teamsize; ++i) {
-        if (characters.at(i).isAlive()) {
+        if (characters.at(i)->isAlive()) {
             num++;
         }
     }
     return num;
 }
 
-std::array<Character, 10> Team::getCharacters() const {
+std::array<Character *, 10> Team::getCharacters() const {
     return characters;
 }
 
@@ -82,16 +89,44 @@ void Team::setLeader(Character *newLeader) {
     Team::leader = newLeader;
 }
 
-void Team::swapLeader(){} ////TBD
-
-Character *Team::findNearestEnemy(Team *team){} ////TBD
-
-void Team::print() {} ////TBD
-
-void Team::attack(Team *enemyTeam) { ////TBD
-    if (enemyTeam == nullptr) throw std::runtime_error("Enemy team is null\n");
-    if (0 == enemyTeam->stillAlive()) throw std::runtime_error("The other team is already dead.\n");
-
+void Team::swapLeader() {
+    if (!this->leader->isAlive()) {
+        auto *newLeader = leader->findNearestCharacter(this);
+        if (newLeader == nullptr) throw std::runtime_error("Couldn't find new leader, all team is null pointers\n");
+        this->setLeader(newLeader);
+    }
 }
 
-////Ninja/Cowboy attacking??
+
+void Team::print() {
+    for (int i = 0; i < teamsize; ++i)
+        if (characters.at(i) != nullptr)
+            std::cout << characters.at(i)->print() << std::endl;
+}
+
+void Team::attack(Team *enemyTeam) {
+    if (enemyTeam == nullptr) throw std::runtime_error("Enemy team is null\n");
+    if (0 == enemyTeam->stillAlive()) throw std::runtime_error("The other team is already dead.\n");
+    if (!leader->isAlive()) swapLeader();
+    auto toAttack = leader->findNearestCharacter();
+    //first for loop is for cowboys to attack first
+    for (int i = 0; i < this->teamsize; ++i) {
+        auto *attacker = characters.at(i);
+        if (attacker != nullptr && attacker->getType() == typeCowboy && attacker->isAlive()) {
+            if (toAttack == nullptr || !toAttack->isAlive()) toAttack = attacker->findNearestCharacter(enemyTeam);
+            if (toAttack != nullptr && toAttack->isAlive()) dynamic_cast<Cowboy *>(attacker)->shoot(toAttack);
+        }
+    }
+    //Second for loop is for the ninjas to attack
+    for (int i = 0; i < this->teamsize; ++i) {
+        auto *attacker = characters.at(i);
+        if (attacker != nullptr && (attacker->getType() == typeTrainedNinja || attacker->getType() == typeOldNinja ||
+                                    attacker->getType() == typeYoungNinja) && attacker->isAlive()) {
+            if (toAttack == nullptr || !toAttack->isAlive()) toAttack = attacker->findNearestCharacter(enemyTeam);
+            if (toAttack != nullptr && toAttack->isAlive() && attacker->isAlive()) {
+                if (attacker->distance(toAttack) <= 1) dynamic_cast<Ninja *>(attacker)->slash(toAttack);
+                else dynamic_cast<Ninja *>(attacker)->move(toAttack);
+            }
+        }
+    }
+}
