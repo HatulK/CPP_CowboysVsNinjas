@@ -1,9 +1,5 @@
 #include "Character.hpp"
-#include "Team.hpp"
-
 #include <utility>
-#include <valarray>
-#include <limits>
 
 using namespace ariel;
 
@@ -113,20 +109,5 @@ void Character::setTeam() {
     inteam = true;
 }
 
-Character *Character::findNearestCharacter(Team *team) {
-    Character *answer = nullptr;
-    double temp;
-    double minDistance = std::numeric_limits<double>::max();
-    for (int i = 0; i < team->getTeamsize(); ++i) {
-        if (team->getCharacters().at(i) != nullptr && team->getCharacters().at(i)->isAlive()&&this!=team->getCharacters().at(i)) {
-            temp = this->distance(team->getCharacters().at(i));
-            if (temp < minDistance) {
-                minDistance = temp;
-                answer = team->getCharacters().at(i);
-            }
-        }
-    }
-    return answer;
-}
 //Destructor
 Character::~Character() = default;

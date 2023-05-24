@@ -4,6 +4,7 @@
 #include <iostream>
 #include "Point.hpp"
 #include "Team.hpp"
+//#include "Team.hpp"
 
 namespace ariel {
     enum characterType {
@@ -56,8 +57,6 @@ namespace ariel {
 
         void setLocation(const Point &newLocation);
 
-
-        Character *findNearestCharacter(ariel::Team *team);
     };
 }
 

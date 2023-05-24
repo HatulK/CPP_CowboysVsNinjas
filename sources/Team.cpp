@@ -1,3 +1,4 @@
+#include <limits>
 #include "Team.hpp"
 
 using namespace ariel;
@@ -92,7 +93,7 @@ void Team::setLeader(Character *newLeader) {
 
 void Team::swapLeader() {
     if (!this->leader->isAlive()) {
-        auto *newLeader = leader->findNearestCharacter(this);
+        auto *newLeader =findNearestCharacter(this);
         if (newLeader == nullptr) throw std::runtime_error("Couldn't find new leader, all team is null pointers\n");
         this->setLeader(newLeader);
     }
@@ -109,12 +110,12 @@ void Team::attack(Team *enemyTeam) {
     if (enemyTeam == nullptr) throw std::runtime_error("Enemy team is null\n");
     if (0 == enemyTeam->stillAlive()) throw std::runtime_error("The other team is already dead.\n");
     if (!leader->isAlive()) swapLeader();
-    auto toAttack = leader->findNearestCharacter();
+    auto toAttack = findNearestCharacter(enemyTeam);
     //first for loop is for cowboys to attack first
     for (int i = 0; i < this->teamsize; ++i) {
         auto *attacker = characters.at(i);
         if (attacker != nullptr && attacker->getType() == typeCowboy && attacker->isAlive()) {
-            if (toAttack == nullptr || !toAttack->isAlive()) toAttack = attacker->findNearestCharacter(enemyTeam);
+            if (toAttack == nullptr || !toAttack->isAlive()) toAttack =findNearestCharacter(enemyTeam);
             if (toAttack != nullptr && toAttack->isAlive()) dynamic_cast<Cowboy *>(attacker)->shoot(toAttack);
         }
     }
@@ -123,7 +124,7 @@ void Team::attack(Team *enemyTeam) {
         auto *attacker = characters.at(i);
         if (attacker != nullptr && (attacker->getType() == typeTrainedNinja || attacker->getType() == typeOldNinja ||
                                     attacker->getType() == typeYoungNinja) && attacker->isAlive()) {
-            if (toAttack == nullptr || !toAttack->isAlive()) toAttack = attacker->findNearestCharacter(enemyTeam);
+            if (toAttack == nullptr || !toAttack->isAlive()) toAttack = findNearestCharacter(enemyTeam);
             if (toAttack != nullptr && toAttack->isAlive() && attacker->isAlive()) {
                 if (attacker->distance(toAttack) <= 1) dynamic_cast<Ninja *>(attacker)->slash(toAttack);
                 else dynamic_cast<Ninja *>(attacker)->move(toAttack);
@@ -131,3 +132,20 @@ void Team::attack(Team *enemyTeam) {
         }
     }
 }
+
+Character *Team::findNearestCharacter(Team *team) {
+    Character *answer = nullptr;
+    double temp;
+    double minDistance = std::numeric_limits<double>::max();
+    for (int i = 0; i < team->getTeamsize(); ++i) {
+        if (team->getCharacters().at(i) != nullptr && team->getCharacters().at(i)->isAlive()) {
+            temp = leader->distance(team->getCharacters().at(i));
+            if (temp < minDistance) {
+                minDistance = temp;
+                answer = team->getCharacters().at(i);
+            }
+        }
+    }
+    return answer;
+}
+

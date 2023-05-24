@@ -9,16 +9,16 @@
 #include "array"
 
 namespace ariel {
-    
+
 
     class Team {
     private:
-        std::array<Character*, 10> characters{};
+        std::array<Character *, 10> characters{};
         Character *leader;
         int teamsize;
     public:
 
-        explicit Team(Character *leader);
+        explicit Team(Character* leader);
 
         Team(const Team &other);
 
@@ -38,11 +38,13 @@ namespace ariel {
 
         virtual ~Team();
 
-        const std::array<Character*, 10>& getCharacters() const;
+        const std::array<Character *, 10> &getCharacters() const;
 
         int getTeamsize() const;
 
         Character *getLeader() const;
+
+        Character *findNearestCharacter(Team *team);
 
         void setLeader(Character *newLeader);
 
