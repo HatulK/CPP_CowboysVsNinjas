@@ -23,4 +23,4 @@ namespace ariel {
 }
 
 
-#endif //SYSTEMSEX4A_COWBOY_HPP
+#endif

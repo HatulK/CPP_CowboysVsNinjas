@@ -1,5 +1,5 @@
-#ifndef SYSTEMSEX4A_NINJA_healthpointsP
-#define SYSTEMSEX4A_NINJA_healthpointsP
+#ifndef SYSTEMSEX4A_NINJA
+#define SYSTEMSEX4A_NINJA
 
 #include "Character.hpp"
 

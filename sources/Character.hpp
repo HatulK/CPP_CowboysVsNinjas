@@ -1,5 +1,5 @@
-#ifndef SYSTEMSEX4A_CHARACTER_healthpointsP
-#define SYSTEMSEX4A_CHARACTER_healthpointsP
+#ifndef SYSTEMSEX4A_CHARACTER
+#define SYSTEMSEX4A_CHARACTER
 
 #include <iostream>
 #include "Point.hpp"
