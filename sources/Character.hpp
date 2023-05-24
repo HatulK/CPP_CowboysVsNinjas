@@ -1,10 +1,8 @@
-#ifndef SYSTEMSEX4A_CHARACTER
-#define SYSTEMSEX4A_CHARACTER
+#ifndef SYSTEMSEX4A_CHARACTER_HPP
+#define SYSTEMSEX4A_CHARACTER_HPP
 
-#include <iostream>
 #include "Point.hpp"
-#include "Team.hpp"
-//#include "Team.hpp"
+#include <iostream>
 
 namespace ariel {
     enum characterType {
@@ -13,33 +11,38 @@ namespace ariel {
 
     class Character {
     private:
-        Point location;
-        int healthpoints;
-        bool inteam;
         std::string name;
-
+        int healthpoints;
+        Point location;
         enum characterType type;
+        bool inteam;
 
     public:
-        Character(std::string name,Point location, int healthpoints,enum characterType type);
-
-        virtual ~Character();
-
-        bool isInTeam() const;
-
-        void setTeam();
+        Character(std::string name, Point location, int hitPoints, enum characterType type);
 
         Character();
 
+        Character &operator=(const Character &other);
+
+        Character(const Character &other);
+
+        Character(Character &&other) noexcept;
+
+        Character &operator=(Character &&other) noexcept;
+
+        virtual ~Character();
+
         bool isAlive() const;
 
-        double distance(Character *other);
+        double distance(Character *otherChar);
 
         void hit(int damage);
 
-        Point getLocation();
-
         virtual std::string print() const;
+
+        const Point &getLocation() const;
+
+        void setLocation(const Point &location);
 
         int gethealthpoints() const;
 
@@ -47,18 +50,12 @@ namespace ariel {
 
         characterType getType() const;
 
-        Character& operator=(Character&& other) noexcept;
+        bool isInTeam() const;
 
-         Character(const Character& other);
-
-        Character &operator=(const Character &other);
-
-        Character(Character &&other) noexcept;
-
-        void setLocation(const Point &newLocation);
+        void setTeam();
 
     };
 }
 
 
-#endif
+#endif //SYSTEMSEX4A_CHARACTER_HPP

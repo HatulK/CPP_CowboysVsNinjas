@@ -16,10 +16,11 @@ void Cowboy::shoot(Character *enemy) {
 if(!this->hasboolets()){
     printf("Cannot shoot this turn, instead im reloading.\n");
     this->reload();
+    return;
 }
 //Cowboy damage is 10.
 enemy->hit(10);
-    printf("Shoot successfully, %s has taken 10 damage\n",enemy->getName().c_str());
+    bullets--;
 }
 
 bool Cowboy::hasboolets() const {
@@ -34,6 +35,3 @@ void Cowboy::reload() {
 int Cowboy::getBullets() const {
     return this->bullets;
 }
-
-
-

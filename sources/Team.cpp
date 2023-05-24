@@ -58,15 +58,15 @@ void Team::add(Character *character) {
     if (character == nullptr) throw std::invalid_argument("Null pointer\n");
     if (character->isInTeam()) throw std::runtime_error("This member already in a team.\n");
     if (!character->isAlive()) throw std::runtime_error("Cannot add a dead character to a team.\n");
-    if (characters.size() == 10) throw std::runtime_error("Max character capacity reached.\n");
+    if (teamsize == maxSize) throw std::runtime_error("Max character capacity reached.\n");
     character->setTeam();
-    characters.at(teamsize) = character;
+    characters.at((size_t)teamsize) = character;
     teamsize++;
 }
 
 int Team::stillAlive() {
     int num = 0;
-    for (int i = 0; i < teamsize; ++i) {
+    for (size_t i = 0; i < teamsize; ++i) {
         if (characters.at(i)->isAlive()) {
             num++;
         }
@@ -101,18 +101,18 @@ void Team::swapLeader() {
 
 
 void Team::print() {
-    for (int i = 0; i < teamsize; ++i)
+    for (size_t i = 0; i < teamsize; ++i)
         if (characters.at(i) != nullptr)
             std::cout << characters.at(i)->print() << std::endl;
 }
 
 void Team::attack(Team *enemyTeam) {
-    if (enemyTeam == nullptr) throw std::runtime_error("Enemy team is null\n");
+    if (enemyTeam == nullptr) throw std::invalid_argument("Enemy team is null\n");
     if (0 == enemyTeam->stillAlive()) throw std::runtime_error("The other team is already dead.\n");
     if (!leader->isAlive()) swapLeader();
     auto toAttack = findNearestCharacter(enemyTeam);
     //first for loop is for cowboys to attack first
-    for (int i = 0; i < this->teamsize; ++i) {
+    for (size_t i = 0; i < this->teamsize; ++i) {
         auto *attacker = characters.at(i);
         if (attacker != nullptr && attacker->getType() == typeCowboy && attacker->isAlive()) {
             if (toAttack == nullptr || !toAttack->isAlive()) toAttack =findNearestCharacter(enemyTeam);
@@ -120,7 +120,7 @@ void Team::attack(Team *enemyTeam) {
         }
     }
     //Second for loop is for the ninjas to attack
-    for (int i = 0; i < this->teamsize; ++i) {
+    for (size_t i = 0; i < this->teamsize; ++i) {
         auto *attacker = characters.at(i);
         if (attacker != nullptr && (attacker->getType() == typeTrainedNinja || attacker->getType() == typeOldNinja ||
                                     attacker->getType() == typeYoungNinja) && attacker->isAlive()) {
@@ -137,7 +137,7 @@ Character *Team::findNearestCharacter(Team *team) {
     Character *answer = nullptr;
     double temp;
     double minDistance = std::numeric_limits<double>::max();
-    for (int i = 0; i < team->getTeamsize(); ++i) {
+    for (size_t i = 0; i < team->getTeamsize(); ++i) {
         if (team->getCharacters().at(i) != nullptr && team->getCharacters().at(i)->isAlive()) {
             temp = leader->distance(team->getCharacters().at(i));
             if (temp < minDistance) {

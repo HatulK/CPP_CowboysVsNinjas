@@ -9,11 +9,11 @@
 #include "array"
 
 namespace ariel {
-
+const int maxSize = 10;
 
     class Team {
     private:
-        std::array<Character *, 10> characters{};
+        std::array<Character *, maxSize> characters{};
         Character *leader;
         int teamsize;
     public:
@@ -38,7 +38,7 @@ namespace ariel {
 
         virtual ~Team();
 
-        const std::array<Character *, 10> &getCharacters() const;
+        const std::array<Character *, maxSize> &getCharacters() const;
 
         int getTeamsize() const;
 

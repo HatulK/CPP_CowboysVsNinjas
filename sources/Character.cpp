@@ -26,7 +26,7 @@ double Character::distance(Character *other) {
 
 //Set the player HP after being attacked
 void Character::hit(int damage) {
-    if (damage < 0) throw std::logic_error("Damage should be a natural number.\n");
+    if (damage < 0) throw std::invalid_argument("Damage should be a natural number.\n");
     this->healthpoints -= damage;
 }
 
@@ -91,14 +91,13 @@ Character &Character::operator=(Character &&other) noexcept {
     return *this;
 }
 
-//Returns this player location
-Point Character::getLocation() {
-    return location;
-}
-
 //Change this player location
 void Character::setLocation(const Point &newLocation) {
 location=newLocation;
+}
+
+const Point &Character::getLocation() const {
+    return location;
 }
 
 bool Character::isInTeam() const {

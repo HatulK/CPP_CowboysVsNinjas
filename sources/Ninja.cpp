@@ -19,10 +19,10 @@ void Ninja::slash(Character *enemy) {
     if(enemy== nullptr) throw std::runtime_error("The enemy provided is null pointer\n");
     if(enemy== this)throw std::runtime_error("A ninja can't attack it self.\n");
     if (!isAlive()) throw std::runtime_error("This ninja is dead\n");
-    if (distance(enemy) > 1) {
-        move(enemy); //If the enemy is farther than 1 then move towards him.
+    if(!enemy->isAlive())throw std::runtime_error("This enemy is already dead\n");
+    if (this->distance(enemy) <= 1) {
+        enemy->hit(40);
     }
-    else enemy->hit(40);
 }
 
 int Ninja::getSpeed() const {
